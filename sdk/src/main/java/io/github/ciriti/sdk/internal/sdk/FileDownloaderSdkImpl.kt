@@ -1,9 +1,11 @@
-package io.github.ciriti.sdk.internal
+package io.github.ciriti.sdk.internal.sdk
 
 import android.content.Context
 import io.github.ciriti.sdk.api.FileDownloaderSdk
 import io.github.ciriti.sdk.api.SdkClient
 import io.github.ciriti.sdk.config.FileDownloaderConfig
+import io.github.ciriti.sdk.internal.cache.FileCache
+import io.github.ciriti.sdk.internal.downloader.FileDownloader
 
 internal class FileDownloaderSdkImpl(
     private val context: Context,
@@ -28,7 +30,7 @@ internal class FileDownloaderSdkImpl(
     }
 
     override fun getFilesCount(): Int {
-        return fileCache.
+        return fileCache.getFilesCount()
     }
 
     override fun getFilesSize(): Int {

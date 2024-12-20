@@ -28,5 +28,6 @@ enum class FileDownloaderOption {
 */
 data class FileDownloaderConfig(
     val options: List<FileDownloaderOption>,
-    val fileUrls: List<String>
+    val fileUrls: List<String>,
+    val maxCacheSize: Int
 ) 

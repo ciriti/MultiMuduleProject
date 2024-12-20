@@ -19,7 +19,8 @@ val sdkModule = module {
                 "https://repository.com/file1.png",
                 "https://repository.com/file2.png",
                 "https://repository.com/file3.png",
-            )
+            ),
+            maxCacheSize = 50 * 1024 * 1024
         )
     }
 

@@ -1,4 +1,4 @@
-package io.github.ciriti.sdk.internal
+package io.github.ciriti.sdk.internal.downloader
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,9 +1,9 @@
-package io.github.ciriti.sdk.internal
+package io.github.ciriti.sdk.internal.cache
 
 internal interface FileCache {
     fun loadFiles(): List<ByteArray>
-    fun saveFile(name: String, data: ByteArray)
+    suspend fun saveFile(name: String, data: ByteArray)
     fun getFile(name: String): ByteArray?
-    fun clear()
+    suspend fun clear()
     fun getFilesCount(): Int
 }
