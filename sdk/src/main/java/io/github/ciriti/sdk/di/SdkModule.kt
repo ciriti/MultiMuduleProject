@@ -13,12 +13,12 @@ val sdkModule = module {
             options = listOf(
                 FileDownloaderOption.Option1,
                 FileDownloaderOption.Option2,
-                FileDownloaderOption.Option3,
+                FileDownloaderOption.Option3
             ),
             fileUrls = listOf(
                 "https://repository.com/file1.png",
                 "https://repository.com/file2.png",
-                "https://repository.com/file3.png",
+                "https://repository.com/file3.png"
             ),
             maxCacheSize = 50 * 1024 * 1024
         )
@@ -32,6 +32,4 @@ val sdkModule = module {
             client = client
         }
     }
-
-
 }

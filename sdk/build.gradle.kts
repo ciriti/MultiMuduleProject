@@ -91,4 +91,4 @@ dependencies {
     testImplementation(libs.koin.test)
     testImplementation(libs.koin.test.junit4)
     testImplementation(libs.koin.android.test)
-} 
+}

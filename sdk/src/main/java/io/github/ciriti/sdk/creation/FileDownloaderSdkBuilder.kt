@@ -25,7 +25,6 @@ class FileDownloaderSdkBuilder {
     private val fileDownloader by lazy { HttpFileDownloader() }
 
     fun build(): FileDownloaderSdk {
-
         requireNotNull(context) { "Context must be set" }
         requireNotNull(config) { "Config must be set" }
 

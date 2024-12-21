@@ -10,4 +10,4 @@ interface FileDownloaderSdk {
     fun setClient(client: SdkClient)
 
     companion object
-} 
+}

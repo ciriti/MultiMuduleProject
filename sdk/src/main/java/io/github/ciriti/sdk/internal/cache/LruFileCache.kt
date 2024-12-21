@@ -7,7 +7,7 @@ import java.io.File
 
 internal class LruFileCache(
     private val cacheDir: File,
-    private val maxSize: Int,
+    private val maxSize: Int
 ) : FileCache {
 
     private val lruCache: LruCache<String, ByteArray> by lazy {
@@ -60,5 +60,9 @@ internal class LruFileCache(
 
     override fun getFilesCount(): Int {
         return lruCache.snapshot().size
+    }
+
+    override fun getCurrentSize(): Int {
+        return lruCache.size()
     }
 }

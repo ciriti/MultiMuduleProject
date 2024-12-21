@@ -1,21 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ktlint)
 }
 
 android {
-    namespace = "com.example.posttemplate"
+    namespace = "io.github.ciriti.permissionhandler"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.example.posttemplate"
-        minSdk = libs.versions.compileSdk.get().toInt()
-        targetSdk = ProjectConfig.targetSdk
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -30,7 +28,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get().toString()
@@ -39,22 +36,12 @@ android {
         compose = true
         buildConfig = true
     }
-    packaging {
-        resources {
-            excludes.add("META-INF/*")
-        }
-    }
 }
 
 dependencies {
-
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":core:data"))
-    implementation(project(":feature:auth"))
-    implementation(project(":feature:posts"))
-    implementation(project(":feature:profile"))
-    implementation(project(":permission-handler"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -85,35 +72,23 @@ dependencies {
 
     implementation(libs.androidx.material3)
 
-
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-
-    implementation(libs.androidx.preference)
-
-    testImplementation("io.insert-koin:koin-test:4.0.0")
-    testImplementation("io.insert-koin:koin-test-junit4:4.0.0")
-    testImplementation("io.insert-koin:koin-android-test:4.0.0")
-
     testImplementation(libs.junit)
-    testImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-    testImplementation(libs.androidx.navigation.testing)
-    androidTestImplementation(libs.androidx.navigation.testing)
-
-    androidTestImplementation(libs.mockk.android)
-    testImplementation(libs.mockk)
-    testImplementation(libs.turbine)
-
-    testImplementation(libs.kotlinx.coroutines.test)
-
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.navigation.testing)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(libs.junit)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    testImplementation(libs.androidx.navigation.testing)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.koin.android.test)
 }

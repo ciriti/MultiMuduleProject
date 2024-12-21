@@ -6,4 +6,5 @@ internal interface FileCache {
     fun getFile(name: String): ByteArray?
     suspend fun clear()
     fun getFilesCount(): Int
+    fun getCurrentSize(): Int
 }

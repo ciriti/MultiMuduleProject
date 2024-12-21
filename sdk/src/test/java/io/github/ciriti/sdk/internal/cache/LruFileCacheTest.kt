@@ -1,7 +1,7 @@
 package io.github.ciriti.sdk.internal.cache
 
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.* // ktlint-disable no-wildcard-imports
 import org.junit.Before
 import org.junit.Test
 import java.io.File
@@ -53,5 +53,6 @@ class LruFileCacheTest {
         }
 
         assertEquals(2, fileCache.getFilesCount())
+        assertEquals(2 * 1024, fileCache.getCurrentSize())
     }
 }
