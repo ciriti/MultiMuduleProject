@@ -1,5 +1,7 @@
 package io.github.ciriti.sdk.di
 
+import androidx.lifecycle.LifecycleOwner
+import io.github.ciriti.sdk.api.SdkClient
 import io.github.ciriti.sdk.config.FileDownloaderConfig
 import io.github.ciriti.sdk.config.FileDownloaderOption
 import io.github.ciriti.sdk.creation.fileDownloaderSdk
@@ -25,11 +27,11 @@ val sdkModule = module {
     }
 
     // Repository
-    single {
+    single { (lifecycleOwner: LifecycleOwner) ->
         fileDownloaderSdk {
             context = androidContext()
             config = get()
-            client = client
+            this.lifecycleOwner = lifecycleOwner
         }
     }
 }

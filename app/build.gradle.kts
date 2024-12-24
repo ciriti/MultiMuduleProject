@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":feature:posts"))
     implementation(project(":feature:profile"))
     implementation(project(":permission-handler"))
+    implementation(project(":sdk"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

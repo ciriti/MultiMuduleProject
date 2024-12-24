@@ -15,12 +15,15 @@ import com.example.posttemplate.ui.navigation.Route
 import com.example.posttemplate.ui.navigation.SetupNavGraph
 import com.example.posttemplate.ui.theme.AppTheme
 import io.github.ciriti.permissionhandler.PermissionHandler
+import io.github.ciriti.sdk.api.FileDownloaderSdk
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 class MainActivity : ComponentActivity() {
 
     private val auth by inject<AuthRepository>()
+
+    private val sdk by inject<FileDownloaderSdk>{ parametersOf(this)}
 
     private val requestPermissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -67,6 +70,8 @@ class MainActivity : ComponentActivity() {
             android.Manifest.permission.ACCESS_COARSE_LOCATION
         )
         permissionHandler.checkAndRequestPermissions(requiredPermissions)
+
+        sdk.clearFiles()
     }
 
     private fun resetPermissions(context: Context) {
@@ -76,7 +81,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        resetPermissions(this)
+//        resetPermissions(this)
     }
 
 }

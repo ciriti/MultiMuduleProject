@@ -1,6 +1,7 @@
 package io.github.ciriti.sdk.api
 
 interface FileDownloaderSdk {
+
     fun loadFiles(urls: List<String>)
     fun clearFiles()
     fun getFiles(): List<ByteArray>

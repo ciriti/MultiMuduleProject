@@ -5,6 +5,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,6 +14,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -33,8 +36,11 @@ import com.example.posttemplate.profile.ui.ProfileIntent
 import com.example.posttemplate.profile.ui.ProfileScreen
 import com.example.posttemplate.profile.ui.ProfileViewModel
 import com.example.posttemplate.profile.ui.navigation.profileRoute
+import io.github.ciriti.sdk.api.FileDownloaderSdk
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
+
 
 @Composable
 fun SetupNavGraph(
