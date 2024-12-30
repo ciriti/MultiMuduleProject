@@ -2,16 +2,22 @@ package io.github.ciriti.sdk.creation
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import create
 import io.github.ciriti.sdk.api.FileDownloaderSdk
 import io.github.ciriti.sdk.api.SdkClient
 import io.github.ciriti.sdk.config.FileDownloaderConfig
 import io.github.ciriti.sdk.internal.cache.FileCache
 import io.github.ciriti.sdk.internal.cache.LruFileCache
-import io.github.ciriti.sdk.internal.downloader.FileDownloader
+import io.github.ciriti.sdk.internal.download.DownloadManager
+import io.github.ciriti.sdk.internal.download.FileDownloader
+import io.github.ciriti.sdk.internal.download.create
 import io.github.ciriti.sdk.internal.sdk.FileDownloaderSdkImpl
+import io.github.ciriti.sdk.internal.sdk.LifecycleHandler
 import io.github.ciriti.sdk.internal.sdk.SdkEventFlow
 import io.github.ciriti.sdk.internal.sdk.create
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import java.io.File
 
 class FileDownloaderSdkBuilder {
@@ -34,12 +40,26 @@ class FileDownloaderSdkBuilder {
             )
         }
 
+        val dispatcher = Dispatchers.IO//.limitedParallelism(5)
+
+        val downloadManager = DownloadManager.create(
+            fileDownloader = fileDownloader,
+            fileCache = cache,
+            ioDispatcher = dispatcher,
+            supervisorJob = Job(),
+            sdkEventFlow = sdkEventFlow
+        )
+
+        val lifecycleHandler = LifecycleHandler.create(lifecycleOwner!!)
+
         val sdk = FileDownloaderSdkImpl(
             config = config!!,
             fileCache = cache,
-            fileDownloader = fileDownloader,
+            scope = lifecycleOwner!!.lifecycleScope,
+            downloadManager = downloadManager,
+            lifecycleHandler = lifecycleHandler,
+            ioDispatcher = dispatcher,
             sdkEventFlow = sdkEventFlow,
-            lifecycleOwner = lifecycleOwner!!
         )
         client?.let { sdk.setClient(it) }
         // Apply other configurations as needed

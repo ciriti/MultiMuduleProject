@@ -21,13 +21,17 @@ dependencyResolutionManagement {
 
 rootProject.name = "PostTemplate"
 include(":app")
+
 include(":core:ui")
 include(":core:util")
-include(":feature:auth")
 include(":core:data")
 include(":core:data:network")
 include(":core:data:database")
+
+include(":feature:auth")
 include(":feature:posts")
 include(":feature:profile")
+include(":feature:downloader")
+
 include(":sdk")
 include(":permission-handler")

@@ -7,7 +7,7 @@ import io.github.ciriti.permissionhandler.create
 import org.koin.dsl.module
 
 val permissionHandlerModule = module {
-    single<PermissionHandler> { (context: Context, launcher: ActivityResultLauncher<Array<String>>) ->
+    factory<PermissionHandler> { (context: Context, launcher: ActivityResultLauncher<Array<String>>) ->
         PermissionHandler.create(context, launcher)
     }
 }

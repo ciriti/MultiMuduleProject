@@ -1,44 +1,54 @@
 package io.github.ciriti.sdk.internal.sdk
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import io.github.ciriti.sdk.api.FileDownloaderSdk
 import io.github.ciriti.sdk.api.SdkClient
 import io.github.ciriti.sdk.api.SdkEvent
 import io.github.ciriti.sdk.config.FileDownloaderConfig
 import io.github.ciriti.sdk.internal.cache.FileCache
-import io.github.ciriti.sdk.internal.downloader.FileDownloader
+import io.github.ciriti.sdk.internal.download.DownloadManager
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal class FileDownloaderSdkImpl(
     private val config: FileDownloaderConfig,
     private val fileCache: FileCache,
-    private val fileDownloader: FileDownloader,
-    private val lifecycleOwner: LifecycleOwner,
+    private val scope: CoroutineScope,
+    private val downloadManager: DownloadManager,
+    lifecycleHandler: LifecycleHandler,
     private val sdkEventFlow: SdkEventFlow,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : FileDownloaderSdk, LifecycleEventObserver {
+) : FileDownloaderSdk {
 
     private var client: SdkClient? = null
 
     init {
-        lifecycleOwner.lifecycle.addObserver(this)
-    }
-
-    override fun loadFiles(urls: List<String>) {
-        lifecycleOwner.lifecycleScope.launch {
-
+        lifecycleHandler.onDispose {
+            client = null
+            downloadManager.clearClient()
         }
     }
 
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        println("Caught $exception")
+    }
+
+    override val eventFlow: Flow<SdkEvent>
+        get() = sdkEventFlow.events
+
+    override fun loadFiles() {
+        downloadManager.loadFiles(config.fileUrls, scope, exceptionHandler)
+    }
+
+    override fun loadFiles(urls: List<String>) {
+        downloadManager.loadFiles(urls, scope, exceptionHandler)
+    }
+
     override fun clearFiles() {
-        lifecycleOwner.lifecycleScope.launch(ioDispatcher) {
+        scope.launch(ioDispatcher) {
             fileCache.clear()
         }
     }
@@ -61,18 +71,14 @@ internal class FileDownloaderSdkImpl(
 
     override fun setClient(client: SdkClient) {
         this.client = client
+        downloadManager.setClient(client)
     }
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        when (event) {
-            Lifecycle.Event.ON_DESTROY -> disposeSdk()
-            else -> {
-            }
-        }
+    override fun cancelDownload(name: String) {
+        downloadManager.cancelDownload(name)
     }
 
-    private fun disposeSdk() {
-        lifecycleOwner.lifecycle.removeObserver(this)
-        client = null
+    override fun cancelAllDownloads() {
+        downloadManager.cancelAllDownloads()
     }
 }
