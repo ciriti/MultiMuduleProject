@@ -34,4 +34,5 @@ include(":feature:profile")
 include(":feature:downloader")
 
 include(":sdk")
+include(":sdk-messagequeue")
 include(":permission-handler")
