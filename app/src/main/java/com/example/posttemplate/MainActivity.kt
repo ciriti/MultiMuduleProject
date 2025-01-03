@@ -93,13 +93,13 @@ class MainActivity : ComponentActivity() {
 //            }
 //        }
 
-        sdk.loadFiles()
+//        sdk.loadFiles()
 
-        lifecycleScope.launch(Dispatchers.Default) {
-            sdk.eventFlow.collect {
-                Log.i("FileDownloaderSdk", it.toString())
-            }
-        }
+//        lifecycleScope.launch(Dispatchers.Default) {
+//            sdk.eventFlow.collect {
+//                Log.i("FileDownloaderSdk", it.toString())
+//            }
+//        }
 
     }
 

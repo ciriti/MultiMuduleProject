@@ -16,6 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.posttemplate.auth.ui.AuthenticationViewModel
 import com.example.posttemplate.auth.ui.navigation.authenticationRoute
+import com.example.posttemplate.downloader.ui.DownloadsViewModel
+import com.example.posttemplate.downloader.ui.navigation.downloadsRoute
 import com.example.posttemplate.posts.ui.HomeViewModel
 import com.example.posttemplate.posts.ui.navigation.postsRoute
 import com.example.posttemplate.profile.ui.ProfileViewModel
@@ -103,6 +105,7 @@ fun SetupNavGraph(
                 authenticationRoute(navController, authViewModel)
                 postsRoute(navController, homeViewModel)
                 profileRoute(profileViewModel)
+                downloadsRoute{ download -> println(download) }
             }
         }
     }

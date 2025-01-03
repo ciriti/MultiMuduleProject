@@ -1,10 +1,16 @@
 package com.example.posttemplate.downloader.di
 
 import androidx.lifecycle.LifecycleOwner
+import com.example.posttemplate.downloader.ui.DownloadsEffect
+import com.example.posttemplate.downloader.ui.DownloadsIntent
+import com.example.posttemplate.downloader.ui.DownloadsState
+import com.example.posttemplate.downloader.ui.DownloadsViewModel
+import com.example.posttemplate.ui.components.BaseViewModel
 import io.github.ciriti.sdk.config.FileDownloaderConfig
 import io.github.ciriti.sdk.config.FileDownloaderOption
 import io.github.ciriti.sdk.creation.fileDownloaderSdk
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val sdkModule = module {
@@ -40,4 +46,6 @@ val sdkModule = module {
             this.lifecycleOwner = lifecycleOwner
         }
     }
+
+    viewModel<BaseViewModel<DownloadsState, DownloadsEffect, DownloadsIntent>> { DownloadsViewModel() }
 }

@@ -66,6 +66,11 @@ fun DrawerContent(
             isSelected = currentDestination == Route.Posts.route,
             onClick = { onNavigate(Route.Posts.route) }
         )
+        DrawerItem(
+            label = "Downloads",
+            isSelected = currentDestination?.startsWith(Route.Downloads.route) == true,
+            onClick = { onNavigate(Route.Downloads.route) }
+        )
 
         DrawerItem(
             label = "Sign Out",
