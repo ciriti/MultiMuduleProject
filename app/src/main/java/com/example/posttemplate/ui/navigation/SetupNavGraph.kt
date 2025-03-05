@@ -14,13 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.posttemplate.account.ui.AccountViewModel
 import com.example.posttemplate.account.ui.navigation.accountRoute
-import com.example.posttemplate.auth.ui.AuthenticationViewModel
 import com.example.posttemplate.auth.ui.navigation.authenticationRoute
-import com.example.posttemplate.posts.ui.HomeViewModel
 import com.example.posttemplate.posts.ui.navigation.postsRoute
-import com.example.posttemplate.profile.ui.ProfileViewModel
 import com.example.posttemplate.profile.ui.navigation.profileRoute
 import com.example.posttemplate.ui.components.AdaptiveNavigationDrawer
 import com.example.posttemplate.ui.components.DisplayAlertDialog
@@ -35,10 +31,6 @@ fun SetupNavGraph(
     startDestination: String,
     navController: NavHostController,
     drawerViewModel: DrawerViewModel = koinInject<DrawerViewModel>(),
-    authViewModel: AuthenticationViewModel = koinInject<AuthenticationViewModel>(),
-    profileViewModel: ProfileViewModel = koinInject<ProfileViewModel>(),
-    accountViewModel: AccountViewModel = koinInject<AccountViewModel>(),
-    homeViewModel: HomeViewModel = koinInject<HomeViewModel>(),
 ) {
     val isLargeScreen = isLargeScreen()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -111,10 +103,10 @@ fun SetupNavGraph(
                 navController = navController,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                authenticationRoute(navController, authViewModel)
-                postsRoute(navController, homeViewModel)
-                profileRoute(profileViewModel)
-                accountRoute(accountViewModel)
+                authenticationRoute(navController)
+                postsRoute(navController)
+                profileRoute()
+                accountRoute()
             }
         }
     }

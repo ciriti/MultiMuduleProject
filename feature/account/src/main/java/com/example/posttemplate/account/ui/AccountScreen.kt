@@ -1,5 +1,6 @@
 package com.example.posttemplate.account.ui
 
+import Account
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,14 +21,38 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import Account
+import org.koin.compose.koinInject
+
 
 @Composable
 fun AccountScreen(
-    state: AccountState,
-    modifier: Modifier = Modifier,
+    accountId: Int,
     onBack: () -> Unit,
-    onUpdate: (Account) -> Unit
+    modifier: Modifier = Modifier,
+    viewModel: AccountViewModel = koinInject(),
+) {
+
+    val state by viewModel.state.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.handleIntent(AccountIntent.LoadAccount(accountId))
+    }
+    AccountScreenContent(
+        state = state,
+        onBack = onBack,
+        onUpdate = { account ->
+            viewModel.handleIntent(
+                AccountIntent.UpdateAccount(account)
+            )
+        }
+    )
+}
+
+@Composable
+fun AccountScreenContent(
+    state: AccountState,
+    onBack: () -> Unit,
+    onUpdate: (Account) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     when {
         state.isLoading -> LoadingIndicator()

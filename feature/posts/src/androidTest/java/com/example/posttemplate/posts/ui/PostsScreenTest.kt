@@ -21,7 +21,7 @@ class PostsScreenTest {
 
         // Act
         composeTestRule.setContent {
-            HomeScreen(
+            HomeScreenContent(
                 state = state,
                 onRetry = {},
                 onNavigateToDetails = {}
@@ -40,7 +40,7 @@ class PostsScreenTest {
 
         // Act
         composeTestRule.setContent {
-            HomeScreen(
+            HomeScreenContent(
                 state = state,
                 onRetry = {},
                 onNavigateToDetails = {}
@@ -62,7 +62,7 @@ class PostsScreenTest {
 
         // Act
         composeTestRule.setContent {
-            HomeScreen(
+            HomeScreenContent(
                 state = state,
                 onRetry = {},
                 onNavigateToDetails = {}
@@ -84,7 +84,7 @@ class PostsScreenTest {
         val state = HomeState.Success(posts)
 
         composeTestRule.setContent {
-            HomeScreen(
+            HomeScreenContent(
                 state = state,
                 onRetry = {},
                 onNavigateToDetails = { clickedPostId = it }

@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -21,14 +23,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.posttemplate.auth.R
 import com.example.posttemplate.ui.components.GoogleButton
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
+
+@Composable
+fun AuthenticationScreen(
+    navigateToHome: () -> Unit,
+    viewModel: AuthenticationViewModel = koinInject(),
+) {
+    val scope = rememberCoroutineScope()
+    val state = viewModel.state.collectAsState()
+
+    AuthenticationContent(
+        loadingState = state.value.isLoading,
+        onButtonClicked = {
+            scope.launch {
+                viewModel.handleIntent(AuthenticationIntent.Authenticate)
+            }
+        },
+        navigateToHome = navigateToHome
+    )
+}
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AuthenticationScreen(
+fun AuthenticationContent(
     loadingState: Boolean,
     onButtonClicked: () -> Unit,
     navigateToHome: () -> Unit
 ) {
+
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -88,7 +114,7 @@ fun AuthenticationScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewAuthenticationScreen() {
-    AuthenticationScreen(
+    AuthenticationContent(
         loadingState = false,
         onButtonClicked = {},
         navigateToHome = {}

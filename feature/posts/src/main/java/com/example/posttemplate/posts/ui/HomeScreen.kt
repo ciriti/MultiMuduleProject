@@ -4,18 +4,42 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.posttemplate.posts.domain.model.Post
 import com.example.posttemplate.posts.ui.components.PostItem
 import com.example.posttemplate.ui.components.LoadingIndicator
+import org.koin.compose.koinInject
+
 
 @Composable
 fun HomeScreen(
-    state: HomeState,
-    modifier: Modifier = Modifier,
     onRetry: () -> Unit,
-    onNavigateToDetails: (Int) -> Unit
+    onNavigateToDetails: (Int) -> Unit,
+    viewModel: HomeViewModel = koinInject(),
+) {
+
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.handleIntent(HomeIntent.LoadPosts)
+    }
+    HomeScreenContent(
+        state = state,
+        onRetry = onRetry,
+        onNavigateToDetails = onNavigateToDetails
+    )
+}
+
+@Composable
+fun HomeScreenContent(
+    state: HomeState,
+    onRetry: () -> Unit, // TODO: Handle retry
+    onNavigateToDetails: (Int) -> Unit,
+    modifier: Modifier = Modifier, // TODO:
 ) {
 
     when (state) {
@@ -32,7 +56,7 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(
+    HomeScreenContent(
         state = HomeState.Success(
             listOf(
                 Post(

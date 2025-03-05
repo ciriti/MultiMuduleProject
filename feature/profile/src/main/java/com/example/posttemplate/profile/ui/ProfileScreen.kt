@@ -14,6 +14,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -24,9 +27,30 @@ import com.example.posttemplate.profile.domain.model.Address
 import com.example.posttemplate.profile.domain.model.Company
 import com.example.posttemplate.profile.domain.model.User
 import com.example.posttemplate.ui.components.LoadingIndicator
+import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun ProfileScreen(
+    userId: Int,
+    onBack: () -> Unit,
+    viewModel: ProfileViewModel = koinInject(),
+) {
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.handleIntent(ProfileIntent.LoadProfile(userId))
+    }
+
+    ProfileScreenContent(
+        state = state,
+        onBack = onBack
+    )
+
+}
+
+@Composable
+fun ProfileScreenContent(
     state: ProfileState,
     onBack: () -> Unit
 ) {
@@ -163,7 +187,7 @@ fun CompanySection(user: User) {
 @Composable
 fun PreviewProfileScreen() {
     MaterialTheme {
-        ProfileScreen(
+        ProfileScreenContent(
             state = ProfileState(
                 isLoading = false,
                 user = User(

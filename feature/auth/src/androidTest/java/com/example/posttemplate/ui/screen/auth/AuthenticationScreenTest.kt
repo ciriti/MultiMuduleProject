@@ -5,7 +5,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import com.example.posttemplate.auth.ui.AuthenticationScreen
+import com.example.posttemplate.auth.ui.AuthenticationContent
 import org.junit.Rule
 import org.junit.Test
 
@@ -18,7 +18,7 @@ class AuthenticationScreenTest {
     fun testAuthenticationScreenDisplaysContent() {
         // Arrange
         composeTestRule.setContent {
-            AuthenticationScreen(
+            AuthenticationContent(
                 loadingState = false,
                 onButtonClicked = {},
                 navigateToHome = {}
@@ -39,7 +39,7 @@ class AuthenticationScreenTest {
         var navigated = false
 
         composeTestRule.setContent {
-            AuthenticationScreen(
+            AuthenticationContent(
                 loadingState = false,
                 onButtonClicked = { buttonClicked = true },
                 navigateToHome = { navigated = true }
@@ -58,7 +58,7 @@ class AuthenticationScreenTest {
     fun testLoadingStateDisablesGoogleButton() {
         // Arrange
         composeTestRule.setContent {
-            AuthenticationScreen(
+            AuthenticationContent(
                 loadingState = true,
                 onButtonClicked = {},
                 navigateToHome = {}
@@ -74,7 +74,7 @@ class AuthenticationScreenTest {
     @Test
     fun testGoogleButtonDisabledWhenLoading() {
         composeTestRule.setContent {
-            AuthenticationScreen(
+            AuthenticationContent(
                 loadingState = true,
                 onButtonClicked = {},
                 navigateToHome = {}
